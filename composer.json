@@ -1,0 +1,35 @@
+{
+    "name": "keukenmagazijn/passport-authenticator",
+    "description": "A superclass package that you can extend upon that will handle the authentication and refreshing of your access (bearer) tokens",
+    "keywords": ["laravel", "keukenmagazijn", "passport", "oauth2", "authentication", "tokens"],
+    "type": "library",
+    "license": "MIT",
+    "prefer-stable": true,
+    "version": "1.2.5",
+    "authors": [
+        {
+            "name": "Remy Kooistra",
+            "email": "remykooistra77@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "laravel/framework": ">=5.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Keukenmagazijn\\PassportAuthenticator\\": "src"
+        },
+        "files": []
+    },
+    "extra" : {
+        "laravel" : {
+            "providers" : [
+                "Keukenmagazijn\\PassportAuthenticator\\Providers\\PassportAuthenticatorServiceProvider"
+            ],
+            "aliases": {
+                "PassportAuthenticator": "Keukenmagazijn\\PassportAuthenticator\\Instances\\ConcretePassportAuthenticator"
+            }
+        }
+    }
+}
