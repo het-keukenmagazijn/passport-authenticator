@@ -8,7 +8,6 @@ class PassportAuthenticatorServiceProvider extends \Illuminate\Support\ServicePr
 {
     public function register()
     {
-        parent::register();
         $this->app->bind(
             ExternalOauth2CredentialsRepositoryInterface::class,
             EloquentExternalOauth2CredentialsRepository::class
