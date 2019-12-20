@@ -4,7 +4,7 @@
     "keywords": ["laravel", "keukenmagazijn", "passport", "oauth2", "authentication", "tokens"],
     "type": "library",
     "license": "MIT",
-    "prefer-stable": true,
+    "prefer-stable": false,
     "version": "0.0.1",
     "authors": [
         {
