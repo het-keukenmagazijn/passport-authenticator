@@ -2,6 +2,8 @@
 ## Introduction
 This package is a self-refreshing [Laravel Passport](https://laravel.com/docs/5.8/passport) authenticator. There are superclasses available with which you can make quick custom connectors for all your (micro)services and you will never have to worry about having to maintain, refresh or create your bearer tokens yourself.
 
+**IMPORTANT!** This is for usage with password clients only: https://laravel.com/docs/5.8/passport#creating-a-password-grant-client.
+
 ## How to install
 - You can install the package by requiring the `keukenmagazijn/passport-authenticator` package, or run `composer require keukenmagazijn/passport-authenticator` in your project root directory.
 - When your package is included, you should run `php artisan migrate` to create the `external_oauth2_credentials` table, which the package requires to maintain your tokens.
@@ -119,4 +121,12 @@ class ExampleFactory extends ConcretePassportAuthenticatorFactory
 ### A production use-case example
 So now the set-up is done, you might wonder how you can actually use the package, so I'll show you an example of it!
 
+It's really simple, all you have to do it instantiate the authenticator and use the get/post methods available in the superclasses of this library:
 
+```php
+/** @var \App\Components\PassportAuthenticators\Instances\ExampleAuthenticator $_authenticator */
+$_authenticator = \App::make(\App\Components\PassportAuthenticators\Instances\ExampleAuthenticator::class);
+return $_authenticator->get("/api/v2/products"); // returns the body.
+```
+
+This code will be all you need after the initial set-up!
