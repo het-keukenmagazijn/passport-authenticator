@@ -35,7 +35,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      */
     final public function post(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
         if (!$this->isAuthenticated()) $this->_authenticate();
-        return $this->sendGetRequest($endpoint, $dataToSend, $extraHeaders);
+        return $this->sendPostRequest($endpoint, $dataToSend, $extraHeaders);
     }
 
     /**
