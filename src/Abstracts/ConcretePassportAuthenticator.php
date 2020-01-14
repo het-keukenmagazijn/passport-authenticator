@@ -18,24 +18,30 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @param string $endpoint
      * @param array $dataToSend
      * @param array $extraHeaders
+     * @param bool $debugOutput <See what the request is sending, without requiring authentication.>
      * @return array
      * @throws \Exception
      */
-    final public function get(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        if (!$this->isAuthenticated()) $this->_authenticate();
-        return $this->sendGetRequest($endpoint, $dataToSend, $extraHeaders);
+    final public function get(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false): array {
+        if (!$debugOutput) {
+            if (!$this->isAuthenticated()) $this->_authenticate();
+        }
+        return $this->sendGetRequest($endpoint, $dataToSend, $extraHeaders, $debugOutput);
     }
 
     /**
      * @param string $endpoint
      * @param array $dataToSend
      * @param array $extraHeaders
+     * @param bool $debugOutput <See what the request is sending, without requiring authentication.>
      * @return array
      * @throws \Exception
      */
-    final public function post(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        if (!$this->isAuthenticated()) $this->_authenticate();
-        return $this->sendPostRequest($endpoint, $dataToSend, $extraHeaders);
+    final public function post(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false): array {
+        if (!$debugOutput) {
+            if (!$this->isAuthenticated()) $this->_authenticate();
+        }
+        return $this->sendPostRequest($endpoint, $dataToSend, $extraHeaders, $debugOutput);
     }
 
     /**
@@ -85,12 +91,10 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      */
     protected function sendGetRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        $_sendableData = array_merge($this->getHeaders(), $dataToSend);
-        $_returnData = json_decode(
-            (string) $this->_getGuzzleClient()
-                ->get($endpoint, array_merge($_sendableData, $extraHeaders))
-                ->getBody()
-        );
+        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend);
+        $_clientCall = $this->_getGuzzleClient()
+            ->get($endpoint, array_merge($_sendableData, $extraHeaders));
+        $_returnData = json_decode((string) $_clientCall->getBody());
         if (is_object($_returnData)) $_returnData = (array) $_returnData;
         return $_returnData;
     }
@@ -102,24 +106,28 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      */
     protected function sendPostRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        $_sendableData = array_merge($this->getHeaders(), $dataToSend);
-        return json_decode(
-            (string) $this->_getGuzzleClient()
-                ->post($endpoint, array_merge($_sendableData, $extraHeaders))
-                ->getBody()
-        );
+        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend);
+        $_clientCall = $this->_getGuzzleClient()
+            ->post($endpoint, array_merge($_sendableData, $extraHeaders));
+        $_returnData = json_decode((string) $_clientCall->getBody());
+        if (is_object($_returnData)) $_returnData = (array) $_returnData;
+        return $_returnData;
     }
 
     /**
+     * Calculates the custom headers to send with POST- and GET requests.
+     * @param array|null $extraHeaders
+     * @param bool $skipAccessToken
      * @return array
      */
-    protected function getHeaders(): array {
+    public function getHeaders(?array $extraHeaders, bool $skipAccessToken = false): array {
+        $_accessToken = $skipAccessToken ? null : $this->_getAuthenticator()->getCredentials()->access_token;
         return [
-            'headers' => [
-                'Authorization' => "Bearer " . $this->_getAuthenticator()->getCredentials()->access_token,
+            'headers' => array_merge([
+                'Authorization' => sprintf("Bearer %s", $_accessToken),
                 'Content-Type'  => 'application/json',
                 'Accept'        => 'application/json',
-            ]
+            ], $extraHeaders ?? [])
         ];
     }
 

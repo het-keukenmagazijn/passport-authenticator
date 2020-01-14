@@ -5,7 +5,7 @@
     "type": "library",
     "license": "MIT",
     "prefer-stable": false,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "authors": [
         {
             "name": "Remy Kooistra",
@@ -16,7 +16,8 @@
         "php": ">=7.3",
         "laravel/framework": ">=5.4",
         "rkooistra/super-eloquent-repository": "1.0.*",
-        "guzzlehttp/guzzle": "^6.2"
+        "guzzlehttp/guzzle": "^6.2",
+        "phpunit/phpunit": "8.*"
     },
     "autoload": {
         "psr-4": {
