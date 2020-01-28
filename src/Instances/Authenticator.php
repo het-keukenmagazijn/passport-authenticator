@@ -42,10 +42,18 @@ class Authenticator implements AuthenticatorInterface
             $this->_writeCredentialsToDatabase($_credentials);
         }
         $_credentials = $this->getCredentials();
-        if ($_credentials->expires_at <= date('Y-m-d H:i:s', strtotime(now()))) {
+        if ($this->isTokenExpired()) {
             $this->refreshOauth2Token();
         }
         return $_credentials;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTokenExpired(): bool {
+        $_credentials = $this->getCredentials();
+        return ($_credentials->expires_at <= date('Y-m-d H:i:s', strtotime(now())));
     }
 
     /**
@@ -73,7 +81,7 @@ class Authenticator implements AuthenticatorInterface
      * @return bool
      */
     public function currentlyHasAToken(): bool {
-        return ($this->getAppName() && !empty($this->getCredentials()));
+        return ($this->getAppName() && !empty($this->getCredentials()) && !$this->isTokenExpired());
     }
 
     /**

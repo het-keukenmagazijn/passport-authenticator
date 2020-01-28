@@ -1,5 +1,6 @@
 <?php
 
+use Keukenmagazijn\PassportAuthenticator\Instances\Authenticator;
 use Keukenmagazijn\PassportAuthenticator\Mockables\Mock_ConcretePassportAuthenticator;
 use Keukenmagazijn\PassportAuthenticator\Mockables\Mock_ConcretePassportAuthenticatorFactory;
 

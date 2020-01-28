@@ -20,4 +20,5 @@ interface AuthenticatorInterface
     public function setAuthorizeUri(string $authorizeUri): void;
     public function getTokenUri(): string;
     public function setTokenUri(string $tokenUri): void;
+    public function isTokenExpired(): bool;
 }
