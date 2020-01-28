@@ -57,7 +57,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      */
     public function isAuthenticated (): bool {
         return $this->getAuthenticator()
-            ->currentlyHasAToken();
+            ->currentlyHasAToken() && !$this->getAuthenticator()->isTokenExpired();
     }
 
     /**

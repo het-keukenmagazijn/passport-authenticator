@@ -81,7 +81,7 @@ class Authenticator implements AuthenticatorInterface
      * @return bool
      */
     public function currentlyHasAToken(): bool {
-        return ($this->getAppName() && !empty($this->getCredentials()) && !$this->isTokenExpired());
+        return ($this->getAppName() && !empty($this->getCredentials()));
     }
 
     /**
