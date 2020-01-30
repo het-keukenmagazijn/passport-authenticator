@@ -15,7 +15,7 @@
     "require": {
         "php": ">=7.2",
         "laravel/framework": ">=5.4",
-        "rkooistra/super-eloquent-repository": "1.0.*",
+        "rkooistra/super-eloquent-repository": "^1.0.0",
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
