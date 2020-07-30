@@ -135,12 +135,17 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return Client
      */
     protected final function _getGuzzleClient() : Client {
-        if (empty(self::$_guzzleClient)) {
+	return new \GuzzleHttp\Client([
+                'base_uri' => $this->getBaseUri()
+            ]);
+
+	// Disabled because Guzzle uses a singleton?
+        /*if (empty(self::$_guzzleClient)) {
             self::$_guzzleClient = new \GuzzleHttp\Client([
                 'base_uri' => $this->getBaseUri()
             ]);
         }
-        return self::$_guzzleClient;
+	return self::$_guzzleClient;*/
     }
 
     /**
