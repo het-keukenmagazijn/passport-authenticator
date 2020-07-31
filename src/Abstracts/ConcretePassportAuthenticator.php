@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 abstract class ConcretePassportAuthenticator implements SendsRequests
 {
     /** @var Client */
-    private static $_guzzleClient;
+    private $_guzzleClient;
     /**
      * @var Authenticator
      */
@@ -64,10 +64,10 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return Authenticator
      */
     protected function getAuthenticator(): Authenticator {
-        if (empty(self::$_oauth2Authenticator)) {
-            self::$_oauth2Authenticator = $this->getAuthenticatorInstance();
+        if (empty($this->_oauth2Authenticator)) {
+            $this->_oauth2Authenticator = $this->getAuthenticatorInstance();
         }
-        return self::$_oauth2Authenticator;
+        return $this->_oauth2Authenticator;
     }
 
     /**
@@ -135,26 +135,21 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return Client
      */
     protected final function _getGuzzleClient() : Client {
-	return new \GuzzleHttp\Client([
-                'base_uri' => $this->getBaseUri()
-            ]);
-
-	// Disabled because Guzzle uses a singleton?
-        /*if (empty(self::$_guzzleClient)) {
-            self::$_guzzleClient = new \GuzzleHttp\Client([
+        if (empty($this->_guzzleClient)) {
+            $this->_guzzleClient = new \GuzzleHttp\Client([
                 'base_uri' => $this->getBaseUri()
             ]);
         }
-	return self::$_guzzleClient;*/
+	return $this->_guzzleClient;
     }
 
     /**
      * @return Authenticator
      */
     private function _getAuthenticator(): Authenticator {
-        if (empty(self::$_oauth2Authenticator)) {
-            self::$_oauth2Authenticator = $this->getAuthenticator();
+        if (empty($this->_oauth2Authenticator)) {
+            $this->_oauth2Authenticator = $this->getAuthenticator();
         }
-        return self::$_oauth2Authenticator;
+        return $this->_oauth2Authenticator;
     }
 }

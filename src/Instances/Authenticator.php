@@ -88,16 +88,16 @@ class Authenticator implements AuthenticatorInterface
      * @return array|null
      */
     public function getCredentials():? ExternalOauth2Credential {
-        if (empty(self::$_credentials)) {
+        if (empty($this->_credentials)) {
             $_credentials = $this->_getRepository()->findByKey('app_name', $this->getAppName());
             if (0 < $_credentials->count()) {
-                self::$_credentials = $_credentials->first();
+                $this->_credentials = $_credentials->first();
             } else {
-                self::$_credentials = null;
+                $this->_credentials = null;
             }
 
         }
-        return self::$_credentials;
+        return $this->_credentials;
     }
 
     /**
@@ -113,7 +113,7 @@ class Authenticator implements AuthenticatorInterface
             'refresh_token' => $credentials['refresh_token'],
             'expires_at' => date('Y-m-d H:i:s', strtotime(now())+$credentials['expires_in'])
         ]);
-        if (empty(self::$_credentials)) self::$_credentials = $resource;
+        if (empty($this->_credentials)) $this->_credentials = $resource;
     }
 
     /**
@@ -217,10 +217,10 @@ class Authenticator implements AuthenticatorInterface
      * @return Client
      */
     private function _getGuzzleClient() : Client {
-        if (empty(self::$_guzzleClient)) {
-            self::$_guzzleClient = new \GuzzleHttp\Client();
+	if (empty($this->_guzzleClient)) {
+            $this->_guzzleClient = new \GuzzleHttp\Client();
         }
-        return self::$_guzzleClient;
+        return $this->_guzzleClient;
     }
 
     /**
