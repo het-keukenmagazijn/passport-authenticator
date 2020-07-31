@@ -5,7 +5,7 @@
     "type": "library",
     "license": "MIT",
     "prefer-stable": false,
-    "version": "1.0.6",
+    "version": "1.0.7",
     "authors": [
         {
             "name": "Remy Kooistra",
