@@ -12,7 +12,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
     /**
      * @var Authenticator
      */
-    private static $_oauth2Authenticator;
+    private $_oauth2Authenticator;
 
     /**
      * @param string $endpoint

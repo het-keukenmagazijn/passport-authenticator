@@ -25,11 +25,11 @@ class Authenticator implements AuthenticatorInterface
     /** @var string */
     private $_tokenUri;
     /** @var Client */
-    private static $_guzzleClient;
+    private $_guzzleClient;
     /** @var ExternalOauth2CredentialsRepositoryInterface */
     private static $_repository;
     /** @var ExternalOauth2Credential */
-    private static $_credentials;
+    private $_credentials;
 
     /**
      * USE password client credentials! <https://laravel.com/docs/5.7/passport#password-grant-tokens>
