@@ -1,3 +1,5 @@
 vendor
+_config.yml
 composer.lock
 .phpunit.result.cache
+.idea
