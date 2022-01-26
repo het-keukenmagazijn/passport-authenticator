@@ -90,8 +90,8 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @param array $extraHeaders
      * @return array
      */
-    protected function sendGetRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend);
+    protected function sendGetRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $generateJsonContentType = true): array {
+        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend, $generateJsonContentType);
         $_clientCall = $this->_getGuzzleClient()
             ->get($endpoint, array_merge($_sendableData, $extraHeaders));
         $_returnData = json_decode((string) $_clientCall->getBody());
@@ -105,8 +105,8 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @param array $extraHeaders
      * @return array
      */
-    protected function sendPostRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = []): array {
-        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend);
+    protected function sendPostRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $generateJsonContentType = true): array {
+        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend, $generateJsonContentType);
         $_clientCall = $this->_getGuzzleClient()
             ->post($endpoint, array_merge($_sendableData, $extraHeaders));
         $_returnData = json_decode((string) $_clientCall->getBody());
