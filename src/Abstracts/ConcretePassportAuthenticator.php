@@ -118,16 +118,22 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * Calculates the custom headers to send with POST- and GET requests.
      * @param array|null $extraHeaders
      * @param bool $skipAccessToken
+     * @param bool $generateJsonContentType
      * @return array
      */
-    public function getHeaders(?array $extraHeaders, bool $skipAccessToken = false): array {
+    public function getHeaders(?array $extraHeaders, bool $skipAccessToken = false, bool $generateJsonContentType = true): array {
         $_accessToken = $skipAccessToken ? null : $this->_getAuthenticator()->getCredentials()->access_token;
+        $headers = [
+            'Authorization' => sprintf("Bearer %s", $_accessToken),
+        ];
+
+        if ($generateJsonContentType) {
+            $headers['Content-Type'] = 'application/json';
+            $headers['Accept'] = 'application/json';
+        }
+
         return [
-            'headers' => array_merge([
-                'Authorization' => sprintf("Bearer %s", $_accessToken),
-                'Content-Type'  => 'application/json',
-                'Accept'        => 'application/json',
-            ], $extraHeaders ?? [])
+            'headers' => array_merge($generateJsonContentType, $extraHeaders ?? [])
         ];
     }
 
