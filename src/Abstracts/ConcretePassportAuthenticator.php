@@ -22,11 +22,11 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      * @throws \Exception
      */
-    final public function get(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false): array {
+    final public function get(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false, bool $generateJsonContentType = true): array {
         if (!$debugOutput) {
             if (!$this->isAuthenticated()) $this->_authenticate();
         }
-        return $this->sendGetRequest($endpoint, $dataToSend, $extraHeaders, $debugOutput);
+        return $this->sendGetRequest($endpoint, $dataToSend, $extraHeaders, $generateJsonContentType);
     }
 
     /**
@@ -37,11 +37,11 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      * @throws \Exception
      */
-    final public function post(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false): array {
+    final public function post(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $debugOutput = false, bool $generateJsonContentType = true): array {
         if (!$debugOutput) {
             if (!$this->isAuthenticated()) $this->_authenticate();
         }
-        return $this->sendPostRequest($endpoint, $dataToSend, $extraHeaders, $debugOutput);
+        return $this->sendPostRequest($endpoint, $dataToSend, $extraHeaders, $generateJsonContentType);
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      */
     protected function sendGetRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $generateJsonContentType = true): array {
-        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend, $generateJsonContentType);
+        $_sendableData = array_merge($this->getHeaders($extraHeaders, $generateJsonContentType), $dataToSend);
         $_clientCall = $this->_getGuzzleClient()
             ->get($endpoint, array_merge($_sendableData, $extraHeaders));
         $_returnData = json_decode((string) $_clientCall->getBody());
@@ -106,7 +106,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
      * @return array
      */
     protected function sendPostRequest(string $endpoint, array $dataToSend = [], array $extraHeaders = [], bool $generateJsonContentType = true): array {
-        $_sendableData = array_merge($this->getHeaders($extraHeaders), $dataToSend, $generateJsonContentType);
+        $_sendableData = array_merge($this->getHeaders($extraHeaders, $generateJsonContentType), $dataToSend);
         $_clientCall = $this->_getGuzzleClient()
             ->post($endpoint, array_merge($_sendableData, $extraHeaders));
         $_returnData = json_decode((string) $_clientCall->getBody());
