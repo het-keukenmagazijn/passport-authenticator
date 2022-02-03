@@ -133,7 +133,7 @@ abstract class ConcretePassportAuthenticator implements SendsRequests
         }
 
         return [
-            'headers' => array_merge($generateJsonContentType, $extraHeaders ?? [])
+            'headers' => array_merge($headers, $extraHeaders ?? [])
         ];
     }
 
